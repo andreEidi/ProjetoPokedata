@@ -21,13 +21,23 @@ else:
     df_data = st.session_state["data"]
 
 # Filter values by generation
-gene_df = df_data["Generation"].value_counts().sort_index().index
-gen = st.sidebar.selectbox("Geração", gene_df)
+# gene_df = df_data["Generation"].value_counts().sort_index().index
+# gen = st.sidebar.selectbox("Geração", gene_df)
 
-df_filtered = df_data[(df_data["Generation"] == gen)]
+# df_filtered = df_data[(df_data["Generation"] == gen)]
 # df_filtered.reset_index(names = "NºPokedex", inplace=True)
 
-st.markdown(f"## {gen}º Gen - Pokémon Stats")
+gene_df = df_data["Generation"].value_counts().sort_index().index.tolist()
+gen_options = ["Todos"] + [str(g) for g in gene_df]
+gen_selected = st.sidebar.selectbox("Geração", gen_options)
+
+if gen_selected == "Todos":
+    df_filtered = df_data.copy()
+else:
+    df_filtered = df_data[df_data["Generation"] == int(gen_selected)].copy()
+    # df_filtered.reset_index(names = "NºPokedex", inplace=True)
+
+st.markdown(f"## {gen_selected}º Gen - Pokémon Stats")
 
 # Drop alolan and galarian forms
 df_filtered.drop(["Alolan Form" ,"Galarian Form"], axis=1, inplace=True)
