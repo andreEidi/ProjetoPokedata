@@ -37,6 +37,8 @@ else:
     df_filtered = df_data[df_data["Generation"] == int(gen_selected)].copy()
     # df_filtered.reset_index(names = "NºPokedex", inplace=True)
 
+df_filtered = df_filtered.sort_values(by="Number")
+
 st.markdown(f"## {gen_selected}º Gen - Pokémon Stats")
 
 # Drop alolan and galarian forms
